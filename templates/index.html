@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Popular Movies</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title-font">Popular Movies</h1>
+        
+        <form method="POST" action="{{ url_for('index') }}">
+            <label for="genre">Select Genre:</label>
+            <select id="genre" name="genre">
+                {% for genre_name in genres %}
+                    {% if genre_name == selected_genre %}
+                        <option value="{{ genre_name }}" selected>{{ genre_name }}</option>
+                    {% else %}
+                        <option value="{{ genre_name }}">{{ genre_name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit">Apply</button>
+        </form>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Movie Title</th>
+                    <th>Movie Link</th>
+                    <th>Tomato Meter</th>
+                    <th>Movie Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if data %}
+                    {% for i in range(data["Movie Title"]|length) %}
+                    <tr>
+                        <td>{{ data["Movie Title"][i] }}</td>
+                        <td><a href="{{ data["Movie link"][i] }}" target="_blank"><img src="{{ data["Image"][i] }}" alt="{{ data["Movie Title"][i] }}"></a></td>
+                        <td>{{ data["Tomato Meter"][i] }}</td>
+                        <td>{{ data["Movie Description"][i] }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No movies found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        
+        <div class="pagination">
+            {% if page > 1 %}
+                {% if selected_genre == 'ALL' %}
+                    <a href="{{ url_for('index', page=page-1) }}">Previous</a>
+                {% else %}
+                    <a href="{{ url_for('movies_by_genre', genre=selected_genre, page=page-1) }}">Previous</a>
+                {% endif %}
+            {% endif %}
+            
+            Page {{ page }}
+            
+            {% if data["Movie Title"] %}
+                {% if selected_genre == 'ALL' %}
+                    <a href="{{ url_for('index', page=page+1) }}">Next</a>
+                {% else %}
+                    <a href="{{ url_for('movies_by_genre', genre=selected_genre, page=page+1) }}">Next</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

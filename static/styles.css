@@ -1,0 +1,44 @@
+
+body {
+    font-family: Helvetica, sans-serif;
+    background-color: #a5e957;
+}
+
+.container {
+    background-color: rgb(244, 250, 233); 
+    padding: 20px; 
+    font-family: Trebuchet MS, sans-serif; 
+}   
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #ddd;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.title-font {
+    font-family: Andale Mono, monospace;
+}
+
+.pagination {
+    font-family: Andale Mono, monospace;
+    border: 1px solid #ddd;
+    font-size: 95%;
+    text-align: center;
+}
