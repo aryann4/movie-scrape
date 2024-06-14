@@ -65,34 +65,22 @@ def scrape_movies(url):
         tlist.append(title)
         tlink.append(full_link)
 
-        try:
-            image_tag = movie.find("rt-img", class_="posterImage")
-            if image_tag:
-                image_url = image_tag.get("src")
-            else:
-                raise AttributeError("Image tag not found")
-        except (AttributeError, KeyError):
-            image_url = 'https://via.placeholder.com/150'  # Placeholder image if no image found
+        image_tag = movie.find("rt-img", class_="posterImage")
+        if image_tag:
+            image_url = image_tag.get("src")  
+        #image_url = 'https://via.placeholder.com/150'  # Placeholder image if no image found
         imageList.append(image_url)
 
         movie_page = requests.get(full_link).text
         movie_soup = BeautifulSoup(movie_page, "html.parser")
 
-        try:
-            tmeter = movie_soup.find("rt-text", {"size":"1.375"}).text
-        except AttributeError:
-            tmeter = 'N/A'
-
+        tmeter = movie_soup.find("rt-text", {"size":"1.375"}).text
         meterlist.append(tmeter)
         
         code = movie_soup.find_all("div", class_="media-scorecard no-border")
-        for films in code:
-            try:
-                description = films.find("drawer-more", {"slot":"description"}).find("rt-text", {"slot":"content"}).text.strip()
-            except AttributeError:
-                description = 'No description available.'
-            desclist.append(description)
-
+        for films in code:     
+            description = films.find("drawer-more", {"slot":"description"}).find("rt-text", {"slot":"content"}).text.strip()            
+        desclist.append(description)
     data = {
         "Movie Title": tlist,
         "Movie link": tlink,
@@ -138,7 +126,6 @@ def movies_by_genre(genre):
         url = base_url + f"genres:{genre_url}~sort:popular?page={page}"
 
     data = scrape_movies(url)
-
     return render_template('index.html', data=data, genres=genres_list, selected_genre=genre, page=page)
 
 if __name__ == '__main__':
