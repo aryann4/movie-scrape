@@ -42,3 +42,8 @@ h1 {
     font-size: 95%;
     text-align: center;
 }
+
+.movie-font {
+    font-weight: bold;
+    font-size: 105%
+}
