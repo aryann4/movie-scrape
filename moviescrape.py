@@ -68,7 +68,6 @@ def scrape_movies(url):
         image_tag = movie.find("rt-img", class_="posterImage")
         if image_tag:
             image_url = image_tag.get("src")  
-        #image_url = 'https://via.placeholder.com/150'  # Placeholder image if no image found
         imageList.append(image_url)
 
         movie_page = requests.get(full_link).text
@@ -81,6 +80,7 @@ def scrape_movies(url):
         for films in code:     
             description = films.find("drawer-more", {"slot":"description"}).find("rt-text", {"slot":"content"}).text.strip()            
         desclist.append(description)
+        
     data = {
         "Movie Title": tlist,
         "Movie link": tlink,
