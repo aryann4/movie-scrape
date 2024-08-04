@@ -66,20 +66,19 @@ def scrape_movies(url):
         tlink.append(full_link)
 
         image_tag = movie.find("rt-img", class_="posterImage")
-        if image_tag:
-            image_url = image_tag.get("src")  
+        image_url = image_tag.get("src") if image_tag else None
         imageList.append(image_url)
 
         movie_page = requests.get(full_link).text
         movie_soup = BeautifulSoup(movie_page, "html.parser")
 
-        tmeter = movie_soup.find("rt-text", {"size":"1.375"}).text
-        meterlist.append(tmeter)
-        
+        tmeter = movie_soup.find("rt-text", {"size":"1.375"})
+        meterlist.append(tmeter.text if tmeter else "N/A")
+
         code = movie_soup.find_all("div", class_="media-scorecard no-border")
-        for films in code:     
-            description = films.find("drawer-more", {"slot":"description"}).find("rt-text", {"slot":"content"}).text.strip()            
-        desclist.append(description)
+        for films in code:
+            rt_text = films.find("rt-text", {"slot":"content"}).text.strip()
+        desclist.append(rt_text)
         
     data = {
         "Movie Title": tlist,
@@ -89,6 +88,7 @@ def scrape_movies(url):
         "Movie Description": desclist
     }
     return data
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
